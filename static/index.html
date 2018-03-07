@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/asset/css/iconfont.css">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .comment-wrapper {
+            width: 690px;
+        }
+        .hot-comment {
+            width: 100%;
+            /* background: green; */
+        }
+
+        .common-comment {
+            width: 100%;
+            /* background: pink; */
+        }
+        .comment-item {
+            display: flex;
+            width: 100%;
+            min-height: 111px;
+        }
+        .avator {
+            flex: 0 0 80px;
+        }
+        .img-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transform: translate3d(5px, 18px, 0);
+            overflow: hidden;
+        }
+        .info {
+            flex: 1;
+            border-bottom: 1px solid #e5e9ef;
+            
+        }
+        .name {
+            font-size: 0;
+            margin-top: 20px;
+            margin-bottom: 6px;
+        }
+        .name .id {
+            font-size: 14px;
+            padding-right: 5px;
+            color: #6d757a;
+
+        }
+        .name .level {
+            font-size: 12px;
+        }
+        .content {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .status {
+            font-size: 0;
+            color: #99a2aa
+        }
+        .status .floor {
+            font-size: 12px;
+            padding-right: 20px;
+        }
+        .status .from {
+            font-size: 12px;
+            padding-right: 20px;
+        }
+        .status .comment-time {
+            font-size: 12px;
+            padding-right: 20px;
+        }
+        .status .like {
+            font-size: 12px;
+            padding-right: 20px;
+        }
+        .status .dislike {
+            font-size: 12px;
+            padding-right: 20px;
+        }
+        .icon-vip1 {
+            color: #eee;
+        }
+        .icon-vip2 {
+            color: #00a1d6;
+        }
+        .icon-vip3 {
+            color: #00a1d6;
+        }
+        .icon-vip4 {
+            color: orange;
+        }
+        .icon-vip5 {
+            color: red;
+        }
+        .icon-zan {
+            font-size: 12px
+        }
+        .icon-cai {
+            font-size: 12px
+        }
+
+        .btn-page {
+
+            position: relative;
+            margin: 20px 0;
+            height: 38px;
+        }
+        .btn-page ul {
+            font-size: 0;
+        }
+        .btn-item {
+            display: inline-block;
+            height: 38px;
+            padding: 0 16px;
+            margin-right: 2px;
+            line-height: 38px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 5px;
+            /* background: #00a1d6; */
+            border: 1px solid #ddd;
+            transition: all .2s'
+        }
+        .btn-item:hover {
+            background: #00a1d6;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-active {
+            background: #00a1d6;
+            color: #fff;
+        }
+        .totalPage {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #99a2aa;
+        }
+        .btn-page span {
+            line-height: 40px;
+            font-size: 12px;
+            padding: 0 4px;
+        }
+        .btn-page span input {
+            width: 24px;
+            padding: 4px 8px;
+            margin: 0 5px;
+            text-indent: 4px;
+            border-radius: 4px;
+        }
+        .submit-comment {
+            position: relative;
+            /* display: relative; */
+            height: 97px;
+            width: 100%;
+        }
+        .submit-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            transform: translate3d(5px, 8px, 0);
+            overflow: hidden;
+        }
+        .submit-textarea {
+            position: absolute;
+            top: 0;
+            left: 80px;
+            
+            /* padding: 5px 10px; */
+        }
+        .submit-textarea .ipt-txt {
+            width: 525px;
+            height: 65px;
+            padding: 5px 10px;
+            border: 1px solid #e5e9ef;
+            background-color: #f4f5f7;
+            border-radius: 4px;
+            color: #555;
+            font: 12px "Helvetica Neue',Helvetica,Arial,'Microsoft Yahei','Hiragino Sans GB','Heiti SC','WenQuanYi Micro Hei',sans-serif";
+            transition: background-color .1s;
+            box-sizing: border-box;
+
+            resize: none;
+        }
+        .submit-textarea .ipt-txt:hover {
+            background: #fff;
+        }
+        .submit-btn {
+            position: absolute;
+            width: 70px;
+            height: 64px;
+            top: 0;
+            right: 0;
+            border-radius: 4px;
+            font-size: 0;
+            line-height: 15px;
+            background:#00a1d6;
+            border: 1px solid #00a1d6;
+
+        }
+        .submit-btn p {
+            display: inline-block;
+            font-size: 14px;
+            width: 30px;
+            height: 30px;
+            transform: translate3d(66%, 50%, 0);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="comment">
+        <div class="comment-wrapper">
+            <div class="common-comment">
+                <ul>
+                    <li class="comment-item" v-for="(item, index) in noteList">
+                        <div class="avator">
+                            <div class="img-wrapper">
+                                <img :src=`/asset/image/${item.avatar}` width="48" height="48">
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">
+                                <span class="id">{{item.name}}</span>
+                                <i class="iconfont icon-vip3" :class=`icon-vip${item.vipLevel}`></i>
+                            </div>
+                            <div class="content">{{item.comment}}</div>
+                            <div class="status">
+                                <span class="floor">#{{item.floor}}</span>
+                                <span class="from">来自IOS客户端</span>
+                                <span class="comment-time">2018-03-04 19:39</span>
+                                <span class="like"><i class="iconfont icon-zan"></i>&nbsp;{{item.likeNum}}</span>
+                                <span class="dislike"><i class="iconfont icon-cai"></i></span>
+                            </div>
+                        </div>
+                    </li>   
+                </ul>
+            </div>
+            <div class="btn-page">
+                <ul>
+                    <li class="btn-item" @click="prev" v-show="prevBtnShow" >上一页</li>
+                    <li class="btn-item" 
+                        v-for="(item, index) in btnPage" 
+                        @click="page(item)" 
+                        v-show="numPageIsShow(index)"
+                        ref="btnGroup"
+                        :class="{'btn-active':index+1===curPage}">
+                        {{item}}
+                    </li>
+                    <li class="btn-item" @click="next" v-show="nextBtnShow">下一页</li>
+                </ul>
+                <span class="totalPage">共16页&nbsp;,&nbsp;跳至<input type="text" v-model="specifyPage" @keyup.enter="goToPage">页</span>
+            </div>
+            <div class="submit-comment">
+                <div class="submit-avatar">
+                    <img src="/asset/image/touxiang1.jpg" width="48" height="48">
+                </div>
+                <div class="submit-textarea">
+                    <textarea cols="80" name="msg" rows="5" placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。" class="ipt-txt" v-model="curMessage"></textarea>
+                </div>
+                <div class="submit-btn" @click="add"><p>发表评论</p></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script>
+    const NUMBER_OF_PAGE = 5
+    const BTN_DISPLAY_DIFF = 2
+    new Vue({
+        el: '#comment',
+        data: {
+            noteList: [],
+            curMessage: '',
+            curPage: 1,
+            btnPage: [],
+            specifyPage: null,
+            floorNum: -1
+        },
+        created() {
+            
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this._initBtnPage()
+                this._initNote()
+            })
+        },
+        filters: {
+            normalizeTimestamp(stamp) {
+                return new Date(stamp)
+            }
+        },
+        computed: {
+            prevBtnShow() {
+                return this.curPage !== 1
+            },
+            nextBtnShow() {
+                return this.curPage !== this.btnPage.length
+            },
+            
+        },
+        methods: {
+            _initBtnPage() {
+                axios.post('./count').then(res => {
+                    this.floorNum = res.data
+                    console.log(res.data)
+                    let arr = []
+                    for(let i = 1; i <= res.data / NUMBER_OF_PAGE; i ++) {
+                        arr.push(i)
+                    }
+                    //省略号暂未添加
+                    this.btnPage = arr
+                })
+            },
+            _initNote() {
+                axios.post('./init').then(res => {
+                    this.noteList = this._normalize(res.data)
+                })
+            },
+            _normalize(arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i].time = Date.now()
+                }
+                return arr
+            },
+            _selectItem(index) {
+                axios.post('./page', {
+                    pageIndex: index - 1
+                }).then(res => {
+                    this.noteList = this._normalize(res.data)
+                })
+            },
+            _removeClass(el, className) {
+                if (!this._haveClass(el, className)) {
+                    return
+                }
+                let newClass = el.className.split(' ')
+                let arr = newClass.filter((item => {
+                    return item !== className
+                }))
+                
+                el.className = arr.join(' ')
+                
+            },
+            _addClass(el, className) {
+                if (this._haveClass(el, className)) {
+                    return 
+                }
+                let newClass = el.className.split(' ')
+                newClass.push(className)
+                el.className = newClass.join(' ')
+            },
+            _haveClass(el,className) {
+                let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
+                return reg.test(el.className)
+            },
+            page(item) {
+                this.curPage = item
+                this._selectItem(item)
+            },
+            prev() {
+                this.curPage = this.curPage - 1
+                this._selectItem(this.curPage)
+            },
+            next() {
+                this.curPage = this.curPage + 1
+                this._selectItem(this.curPage)
+                
+            },
+            numPageIsShow(index) {
+                return Math.abs((this.curPage - index)) < BTN_DISPLAY_DIFF
+            },
+            add() {
+                if (this.curName === '') {
+                    return this.tips = '未输入用户名或者未输入内容'
+                } else {
+                    axios.post('./add', {
+                        comment: this.curMessage,
+                        floor: this.floorNum + 1
+                    }).then(res => {
+                        this.tips = 'success'
+                        this.curMessage = ''
+                    })
+                }
+            },
+            goToPage() {
+                if (!this.specifyPage) {
+                    return 
+                }
+                if (this.specifyPage >= this.btnPage.length) {
+                    this.specifyPage = this.btnPage.length
+                } else if (this.specifyPage <= 1) {
+                    this.specifyPage = 1
+                }
+                this.page(this.specifyPage)
+                //跳转不显示激活状态的bug暂未修复
+
+                // let btnGroup = this.$refs.btnGroup
+                // btnGroup.forEach(item => {
+                //     console.log('1', item.className)
+                //     this._removeClass(item, 'btn-active')
+                //     console.log('2', item.className)
+                // })
+                // this._addClass(btnGroup[this.specifyPage-1], 'btn-active')
+                this.specifyPage = null   
+            }
+        }
+    })
+</script>
+</html>
