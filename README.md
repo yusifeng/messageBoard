@@ -23,6 +23,7 @@
 ```
 
 ###如何使用
+
 `$ git clone https://github.com/yusifeng/messageBoard.git`
 
 `cd messageBoard`
@@ -34,4 +35,5 @@
 `node app.js`
 
 ###项目截图
+
 ![image](/static/asset/image/ceshi.png)
