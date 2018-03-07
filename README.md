@@ -1,4 +1,4 @@
-### messageBoard
+# messageBoard
 高仿bilibili 部分pc端的一个简易留言板项目, 前端采用Vuejs,后端采用nodejs, 数据库使用mongodb
 功能包括上传留言, 翻页 , 精确定位页面和点赞功能, 
 
