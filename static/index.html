@@ -452,7 +452,11 @@
                         floor: this.floorNum
                     }).then(res => {
                         this.curMessage = ''
+<<<<<<< HEAD
                     }).catch(res => {
+=======
+                        console.log(res)
+>>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
                     })
                 }
             },
@@ -467,8 +471,12 @@
                 } else if (parseInt(this.specifyPage) === 'NaN') {
                     return
                 }
+<<<<<<< HEAD
 
                 this.page(this.specifyPage, this.specifyPage - 1)
+=======
+                this.page(this.specifyPage)
+>>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
                 this.specifyPage = null   
             },
             like(floor, likeNum, index) {

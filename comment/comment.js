@@ -5,8 +5,12 @@ module.exports = class Comment {
         vipLevel: vipLevel,
         avatar: avatar,
         floor: floor,
+<<<<<<< HEAD
         commentTime: commentTime,
         id: id
+=======
+        commentTime: commentTime
+>>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
     }) {
         this.name = name
         this.content = content
@@ -16,6 +20,9 @@ module.exports = class Comment {
         this.avatar = avatar
         this.floor = floor
         this.commentTime = commentTime
+<<<<<<< HEAD
         this.id = id
+=======
+>>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
     }
 }
