@@ -1,7 +1,4 @@
-// export const randomStr = function (min, max) {
-//     
 
-// }
 
 
 let utils = Object.create(null)

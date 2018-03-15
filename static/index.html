@@ -12,6 +12,7 @@
             padding: 0;
         }
         .comment-wrapper {
+            position: relative;
             width: 690px;
         }
         .hot-comment {
@@ -206,6 +207,13 @@
             border: 1px solid #00a1d6;
 
         }
+        .submit-btn:hover {
+            background: #00b5e5;
+            border-color: #00b5e5;
+        }
+        .submit-btn:hover .submit-textarea .ipt-txt{
+            background: #000
+        }
         .submit-btn p {
             display: inline-block;
             font-size: 14px;
@@ -214,17 +222,32 @@
             transform: translate3d(66%, 50%, 0);
             color: #fff;
         }
+        .like-active {
+            color: #00a1d6;
+        }
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 690px;
+            height: 500px;
+            background: #fff;
+            font-size: 12px;
+            color: #b8c0cc;
+            text-align: center;
+            line-height: 100px;
+        }
     </style>
 </head>
 <body>
     <div id="comment">
-        <div class="comment-wrapper">
+        <div class="comment-wrapper" v-show="noteList.length!==0">
             <div class="common-comment">
                 <ul>
                     <li class="comment-item" v-for="(item, index) in noteList">
                         <div class="avator">
                             <div class="img-wrapper">
-                                <img :src=`/asset/image/${item.avatar}` width="48" height="48">
+                                <img :src="item.avatar" width="48" height="48">
                             </div>
                         </div>
                         <div class="info">
@@ -232,12 +255,14 @@
                                 <span class="id">{{item.name}}</span>
                                 <i class="iconfont icon-vip3" :class=`icon-vip${item.vipLevel}`></i>
                             </div>
-                            <div class="content">{{item.comment}}</div>
+                            <div class="content">{{item.content}}</div>
                             <div class="status">
                                 <span class="floor">#{{item.floor}}</span>
                                 <span class="from">来自IOS客户端</span>
-                                <span class="comment-time">2018-03-04 19:39</span>
-                                <span class="like"><i class="iconfont icon-zan"></i>&nbsp;{{item.likeNum}}</span>
+                                <span class="comment-time">{{formatDate(item.commentTime, 'yy-MM-dd hh:mm:ss')}}</span>
+                                <span class="like"><i class="iconfont icon-zan" 
+                                                      @click="like(item.floor, item.likeNum, index)" 
+                                                      :class="{'like-active': item.likeNum>0}"></i>&nbsp;{{item.likeNum}}</span>
                                 <span class="dislike"><i class="iconfont icon-cai"></i></span>
                             </div>
                         </div>
@@ -249,10 +274,10 @@
                     <li class="btn-item" @click="prev" v-show="prevBtnShow" >上一页</li>
                     <li class="btn-item" 
                         v-for="(item, index) in btnPage" 
-                        @click="page(item)" 
+                        @click="page(item, index)" 
                         v-show="numPageIsShow(index)"
                         ref="btnGroup"
-                        :class="{'btn-active':index+1===curPage}">
+                        :class="{'btn-active':parseInt(index)+1===parseInt(curPage)}">
                         {{item}}
                     </li>
                     <li class="btn-item" @click="next" v-show="nextBtnShow">下一页</li>
@@ -269,6 +294,7 @@
                 <div class="submit-btn" @click="add"><p>发表评论</p></div>
             </div>
         </div>
+        <div class="loading" v-show="noteList.length===0">loading...</div>
     </div>
 </body>
 <script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
@@ -309,13 +335,47 @@
             },
             
         },
+        watch: {
+            floorNum() {
+                this._initBtnPage()
+                this._selectItem(this.curPage)
+            }
+        },
         methods: {
+            formatDate(date, fmt) {
+                if (!date.getFullYear) {
+                    date = new Date(date)
+                }
+                if (/(y+)/.test(fmt)) {
+                    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+                }
+
+                let o = {
+                    'M+': date.getMonth() + 1,
+                    'd+': date.getDate(),
+                    'h+': date.getHours(),
+                    'm+': date.getMinutes(),
+                    's+': date.getSeconds()
+                }
+
+                for (let k in o) {
+                    if (new RegExp(`(${k})`).test(fmt)) {
+                        let str = o[k] + ''
+                        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this._padLeftZero(str))
+                    }
+                }
+
+                return fmt
+            },
+            _padLeftZero(str) {
+                return `00${str}`.substr(str.length)
+            },  
             _initBtnPage() {
                 axios.post('./count').then(res => {
                     this.floorNum = res.data
-                    console.log(res.data)
                     let arr = []
-                    for(let i = 1; i <= res.data / NUMBER_OF_PAGE; i ++) {
+                    let btnNum = Math.ceil(res.data / NUMBER_OF_PAGE)
+                    for(let i = 1; i <= btnNum; i ++) {
                         arr.push(i)
                     }
                     //省略号暂未添加
@@ -335,7 +395,7 @@
             },
             _selectItem(index) {
                 axios.post('./page', {
-                    pageIndex: index - 1
+                    pageIndex: index
                 }).then(res => {
                     this.noteList = this._normalize(res.data)
                 })
@@ -364,7 +424,7 @@
                 let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
                 return reg.test(el.className)
             },
-            page(item) {
+            page(item, index) {
                 this.curPage = item
                 this._selectItem(item)
             },
@@ -373,23 +433,26 @@
                 this._selectItem(this.curPage)
             },
             next() {
-                this.curPage = this.curPage + 1
+                //跳转后 this.ncurPage
+                this.curPage = parseInt(this.curPage) + 1
                 this._selectItem(this.curPage)
                 
             },
             numPageIsShow(index) {
                 return Math.abs((this.curPage - index)) < BTN_DISPLAY_DIFF
+                // return true
             },
             add() {
-                if (this.curName === '') {
-                    return this.tips = '未输入用户名或者未输入内容'
+                if (this.curMessage === '') {
+                    return this.tips = '未输入评论'
                 } else {
+                    this.floorNum = this.floorNum + 1
                     axios.post('./add', {
-                        comment: this.curMessage,
-                        floor: this.floorNum + 1
+                        content: this.curMessage,
+                        floor: this.floorNum
                     }).then(res => {
-                        this.tips = 'success'
                         this.curMessage = ''
+                    }).catch(res => {
                     })
                 }
             },
@@ -401,18 +464,21 @@
                     this.specifyPage = this.btnPage.length
                 } else if (this.specifyPage <= 1) {
                     this.specifyPage = 1
+                } else if (parseInt(this.specifyPage) === 'NaN') {
+                    return
                 }
-                this.page(this.specifyPage)
-                //跳转不显示激活状态的bug暂未修复
 
-                // let btnGroup = this.$refs.btnGroup
-                // btnGroup.forEach(item => {
-                //     console.log('1', item.className)
-                //     this._removeClass(item, 'btn-active')
-                //     console.log('2', item.className)
-                // })
-                // this._addClass(btnGroup[this.specifyPage-1], 'btn-active')
+                this.page(this.specifyPage, this.specifyPage - 1)
                 this.specifyPage = null   
+            },
+            like(floor, likeNum, index) {
+                axios.post('./updata', {
+                    floor,
+                    likeNum
+                }).then(res => {
+                    this.noteList[index].likeNum ++
+                })
+                
             }
         }
     })

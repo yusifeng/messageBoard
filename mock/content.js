@@ -1,0 +1,17 @@
+module.exports = {
+    content0: '我感觉这是一个比较好的方法',
+    content1: '赞一个',
+    content2: 'this is axios api ',
+    content3: '大吉大利, 今晚吃鸡',
+    content4: 'winner winner chicken dinner',
+    content5: '不二家 棒棒糖',
+    content6: '青苹果影院,看你想看',
+    content7: '百岁山, 引用天然矿泉水',
+    content8: 'Hahhahahahah',
+    content9: 'Emmmmmmmmmmmmmmmm....',
+    content10: '2333333333333',
+    content11: '抱歉，你访问的页面地址有误，或者该页面不存在',
+    content12: 'js获取随机汉子',
+    content13: '比利海灵顿3月3日去世',
+    content14: '这可真是一个悲惨的消息',
+}

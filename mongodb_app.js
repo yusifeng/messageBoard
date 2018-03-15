@@ -5,6 +5,8 @@ let config = require('./config/config')
 let bodyParser = require('body-parser')
 let utils = require('./utils/utils')
 let Comment = require('./comment/comment')
+let avatar = require('./mock/avatar')
+let timeStamp = require('./mock/timeStamp')
 
 
 let app = express()
@@ -13,17 +15,16 @@ console.log(config.url, config.sql, config.collection)
 let dao = new Dao(config.url, config.sql, config.collection)
 
 app.use(express.static('./static'))
-// app.use(express.static('./asset'))
 
 app.post('/add', (req, res) => {
-  console.log(req.body)
-
+  console.log(req.body.floor)
   let comment = new Comment({
     name: utils.getRandomString(6, 10),
-    comment: req.body.comment,
+    content: req.body.content,
     vipLevel: utils.getRandomInt(2, 5),
-    avatar: `touxiang${utils.getRandomInt(0, 5)}.jpg`,
-    floor: req.body.floor
+    avatar: avatar[`avatar${utils.getRandomInt(1, 6)}`],
+    floor: req.body.floor,
+    commentTime: Date.now()
   })
   dao.insert(comment).then(result => {
     res.send(comment)
@@ -52,6 +53,16 @@ app.post('/count', (req, res) => {
 app.post('/page', (req, res) => {
   let pageIndex = req.body.pageIndex
   dao.search({}, 5, pageIndex).then(result => {
+    res.send(result)
+  })
+})
+
+app.post('/updata', (req, res) => {
+  let {floor, likeNum} = req.body
+  let whereStr = {floor}
+  let updataStr = { $set: { likeNum: likeNum + 1}}
+  let updateMany = false
+  dao.update(whereStr, updataStr, updateMany).then(result => {
     res.send(result)
   })
 })
