@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ### messageBoard
 基于Vue + mongodb/json-server + express 的一款简易bilibili评论模块, 涉**点赞, 评论, 翻页, 跳转**简单功能,  
 
@@ -10,7 +9,6 @@
 功能包括上传留言, 翻页 , 精确定位页面和点赞功能, 
 
 ##页面结构
->>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
 ```
 |-comment
   |-comment.js     				//评论构造函数
@@ -38,9 +36,7 @@
 
 ```
 
-<<<<<<< HEAD
 - #### 下载使用
-=======
 ##如何使用
 >>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
 
@@ -60,10 +56,5 @@
 
 - #### 项目地址
 
-<<<<<<< HEAD
 [高仿bilibili评论区](http://106.12.5.207:3001)
-=======
-##项目截图
 
-![image](/static/asset/image/ceshi.png)
->>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
