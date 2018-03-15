@@ -2,7 +2,6 @@
 基于Vue + mongodb/json-server + express 的一款简易bilibili评论模块, 涉**点赞, 评论, 翻页, 跳转**简单功能,  
 
 - #### 项目结构
-##页面结构
 ```
 |-comment
   |-comment.js     				//评论构造函数
