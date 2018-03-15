@@ -30,7 +30,6 @@
 ```
 
 - #### 下载使用
-##如何使用
 `$ git clone https://github.com/yusifeng/messageBoard.git`
 
 `$ cd messageBoard`
