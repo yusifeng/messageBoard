@@ -38,8 +38,6 @@
 
 - #### 下载使用
 ##如何使用
->>>>>>> 483c228465d0457d1acebb8a0fa13194703bcbc9
-
 `$ git clone https://github.com/yusifeng/messageBoard.git`
 
 `$ cd messageBoard`
